@@ -1,0 +1,7 @@
+dist
+typings
+node
+node_modules
+log.txt
+npm-debug.log
+.git
