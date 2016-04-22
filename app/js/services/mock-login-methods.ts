@@ -26,5 +26,18 @@ export var LOGINMETHODS: LoginMethod[] = [
     "param3": "",
     "param4": "",
     "param5": ""
+  },
+  {
+    "loginType": "google",
+    "buttonText": "Sign in with Google",
+    "buttonStyle": "btn-google",
+    "buttonFontStyle": "fa-google",
+    "classFilePath": "app/js/components/login/google-login",
+    "className": "GoogleLogin",
+    "param1": "<apiKey>",
+    "param2": "<clientId>",
+    "param3": "",
+    "param4": "",
+    "param5": ""
   }
 ];

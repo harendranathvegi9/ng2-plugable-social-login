@@ -5,4 +5,3 @@ node_modules
 log.txt
 npm-debug.log
 .git
-mock-login-methods.ts
