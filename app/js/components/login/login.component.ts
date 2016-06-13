@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit{
   ngOnInit() {
     this.loginService.loginMethods().then(lm => {
       this.loginMethods = lm
+      this.loginService.loadAllLoginMethods();
     });
   }
   onLogin(loginType: string){

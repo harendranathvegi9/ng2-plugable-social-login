@@ -39,11 +39,21 @@ export class LoginService{
   loginMethods(): Promise<Array<LoginMethod>>{
     return this.socialLonginService.listLoginMethods();
   }
+  loadAllLoginMethods(){
+    return new Promise<any>((resolve, reject)=>{
+      this.loginMethods().then(loginMethods=>{
+        for(let loginMethod of loginMethods){
+          this.loadLoginMethod(loginMethod);
+        }
+      });
+    });
+  }
   private loadLoginMethod(loginMethod: LoginMethod): Promise<Login>{
     return new Promise<Login>((resolve, reject)=>{
       System.import(loginMethod.classFilePath).then(module=>{
         let login = <Login> (new module[loginMethod.className]());
-        login.init(loginMethod);
+        window.setTimeout(()=>{login.init(loginMethod);}, 10);
+
         console.log(login);
         resolve(login);
       });

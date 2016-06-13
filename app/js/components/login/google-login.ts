@@ -17,10 +17,20 @@ const GAPI_SCOPES = 'https://www.googleapis.com/auth/userinfo.profile';
 
 
 export class GoogleLogin implements Login{
+
   init(loginMethod: LoginMethod): void{
+    window.ggAsyncInit = {
+      apiKey: loginMethod.param1,
+      clientId: loginMethod.param2
+    }
+
+    var ggloginInst = this;
     window.handleGGClientLoad = function(){
       if (!window.googleLoginInstance){
         setTimeout(window.handleGGClientLoad, 10);
+         window.googleLoginInstance = ggloginInst;
+         console.log("apiKey" + window.ggAsyncInit.apiKey);
+         gapi.client.setApiKey(window.ggAsyncInit.apiKey);
       } else {
         window.googleLoginInstance.handleGGClientLoad();
       }
@@ -34,7 +44,10 @@ export class GoogleLogin implements Login{
     })(document, 'script', 'gapi_auth', 'handleGGClientLoad');
   }
   login(): Promise<LoginToken>{
-    console.log('in FB.login');
+    // if (!this.apiKeyset){
+    //     window.setTimeout(this.login, 10);
+    // }
+    console.log('in GG.login');
     return new Promise<LoginToken>((resolve, reject)=>{
       gapi.auth.authorize({client_id: window.ggAsyncInit.clientId, scope: GAPI_SCOPES, immediate: true}, authResult => {
         if (authResult && !authResult.error) {
@@ -48,6 +61,7 @@ export class GoogleLogin implements Login{
             });
           });
         } else {
+          console.log("error");
           reject("User cancelled or not provide enough permission.")
         }
       });
@@ -65,7 +79,9 @@ export class GoogleLogin implements Login{
   }
 
   handleGGClientLoad(){
-    this.checkGGAuth();
+
+    // this.apiKeyset = true;
+    window.setTimeout(this.checkGGAuth, 1);
   }
 
   private handleGGAuthResult(authResult: any){
